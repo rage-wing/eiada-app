@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "922911745683",
+    "project_id": "eiada-561fb",
+    "storage_bucket": "eiada-561fb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:922911745683:android:369b0f20daad5ba7f3cf66",
+        "android_client_info": {
+          "package_name": "com.eiada"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "922911745683-espceg423rj5ufadlgud58cb39q4jelq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.eiada",
+            "certificate_hash": "4dbe1cc231db9feae0d11c44d53625ef9aa8ddf6"
+          }
+        },
+        {
+          "client_id": "922911745683-lumem7dotmaed6m67obbmbshc5qvhs07.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0Nqt0Q45vmnQlGbQmtKWZMTHRkaWKMI0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "922911745683-lumem7dotmaed6m67obbmbshc5qvhs07.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
