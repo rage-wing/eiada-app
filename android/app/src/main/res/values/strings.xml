@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">eiada</string>
+    <string name="facebook_app_id">1901668663557620</string>
+    <string name="facebook_client_token">e8f6ee781a49b2095ec8c3f825c4a146</string>
 </resources>

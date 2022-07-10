@@ -11,16 +11,40 @@ import {
 import React from 'react';
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import {useDispatch} from 'react-redux';
-import {setUser} from '../redux/slices/user';
+import {LoginManager, AccessToken} from 'react-native-fbsdk-next';
 
 const Login = props => {
-  const dispatch = useDispatch();
-
-  const login = async () => {
+  const loginWithGoogle = async () => {
     const {idToken} = await GoogleSignin.signIn();
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
     return auth().signInWithCredential(googleCredential);
+  };
+  const loginWithFacebook = async () => {
+    // Attempt login with permissions
+    const result = await LoginManager.logInWithPermissions([
+      'public_profile',
+      'email',
+      'user_photos',
+    ]);
+
+    if (result.isCancelled) {
+      throw 'User cancelled the login process';
+    }
+
+    // Once signed in, get the users AccesToken
+    const data = await AccessToken.getCurrentAccessToken();
+
+    if (!data) {
+      throw 'Something went wrong obtaining access token';
+    }
+
+    // Create a Firebase credential with the AccessToken
+    const facebookCredential = auth.FacebookAuthProvider.credential(
+      data.accessToken,
+    );
+
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(facebookCredential);
   };
 
   return (
@@ -45,7 +69,7 @@ const Login = props => {
       </Center>
       <Box w="full">
         <VStack space={4} m={12}>
-          <Pressable onPress={login}>
+          <Pressable onPress={loginWithGoogle}>
             <HStack
               alignItems="center"
               bgColor="secondary.500"
@@ -63,7 +87,7 @@ const Login = props => {
               </Text>
             </HStack>
           </Pressable>
-          <Pressable onPress={login}>
+          <Pressable onPress={loginWithFacebook}>
             <HStack
               alignItems="center"
               bgColor="primary.500"
