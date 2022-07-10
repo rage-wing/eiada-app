@@ -1,13 +1,7 @@
 import {Box, Center, HStack, Image, Text} from 'native-base';
-import React, {useEffect} from 'react';
+import React from 'react';
 
 const Splash = props => {
-  useEffect(() => {
-    setTimeout(() => {
-      props.navigation.navigate('Login');
-    }, 200);
-  }, [props.navigation]);
-
   return (
     <Center px={8} flex={1}>
       <Box w="full" h={48}>
