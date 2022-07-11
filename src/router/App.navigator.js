@@ -6,11 +6,19 @@ import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {useSelector, useDispatch} from 'react-redux';
 import {setUser} from '../redux/slices/user';
+import keys from '../config/keys.json';
 
 const AppNavigator = () => {
   const [loading, setLoading] = useState(true);
   const user = useSelector(state => state.user.user);
   const dispatch = useDispatch();
+
+  const googleAuthConfig = () => {
+    GoogleSignin.configure({
+      webClientId: keys.google.webClientId,
+      scopes: ['profile', 'email'],
+    });
+  };
 
   const onAuthStateChanged = userInfo => {
     const userData = JSON.parse(JSON.stringify(userInfo, 0, 2));
@@ -19,14 +27,6 @@ const AppNavigator = () => {
     if (loading) {
       setLoading(false);
     }
-  };
-
-  const googleAuthConfig = () => {
-    GoogleSignin.configure({
-      webClientId:
-        '922911745683-lumem7dotmaed6m67obbmbshc5qvhs07.apps.googleusercontent.com',
-      scopes: ['profile', 'email'],
-    });
   };
 
   useEffect(() => {

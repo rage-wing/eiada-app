@@ -24,7 +24,6 @@ const Login = props => {
     const result = await LoginManager.logInWithPermissions([
       'public_profile',
       'email',
-      'user_photos',
     ]);
 
     if (result.isCancelled) {
