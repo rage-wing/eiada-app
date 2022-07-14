@@ -7,6 +7,7 @@ import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {useSelector, useDispatch} from 'react-redux';
 import {setUser} from '../redux/slices/user';
 import keys from '../config/keys.json';
+import userService from '../services/user';
 
 const AppNavigator = () => {
   const [loading, setLoading] = useState(true);
@@ -20,10 +21,14 @@ const AppNavigator = () => {
     });
   };
 
-  const onAuthStateChanged = userInfo => {
+  const onAuthStateChanged = async userInfo => {
     const userData = JSON.parse(JSON.stringify(userInfo, 0, 2));
-
-    dispatch(setUser(userData));
+    if (userData) {
+      const res = await userService.login(userData);
+      dispatch(setUser(res.payload));
+    } else {
+      dispatch(setUser(null));
+    }
     if (loading) {
       setLoading(false);
     }

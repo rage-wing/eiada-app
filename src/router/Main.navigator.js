@@ -7,6 +7,8 @@ import Tabbar from './components/Tabbar';
 import Drawer from './components/Drawer';
 
 import Home from '../views/Home';
+import Appointment from '../views/Appointment';
+import CreateAppointment from '../views/CreateAppointment';
 
 const Tabs = createBottomTabNavigator();
 
@@ -19,6 +21,8 @@ const TabMenu = () => {
       }}
       tabBar={props => <Tabbar {...props} />}>
       <Tabs.Screen name="Home" component={Home} />
+      <Tabs.Screen name="Appointment" component={Appointment} />
+      <Tabs.Screen name="CreateAppointment" component={CreateAppointment} />
     </Tabs.Navigator>
   );
 };

@@ -1,43 +1,80 @@
-import {Box, HStack, IconButton, Icon, Image, Text} from 'native-base';
+import {useNavigation} from '@react-navigation/native';
+import {
+  Box,
+  HStack,
+  IconButton,
+  Icon,
+  Image,
+  Text,
+  Pressable,
+} from 'native-base';
 import React from 'react';
 import IonIcon from 'react-native-vector-icons/Ionicons';
+import strMax from '../utils/strMax';
+import Spinner from './Spinner';
 
 const Appointment = props => {
+  const {doctor} = props;
+  const navigation = useNavigation();
+  const openAppointment = () => {
+    navigation.navigate('Appointment', props);
+  };
+
+  const ActionIcon = () => {
+    const {status, type} = props;
+
+    if (status === 'cancelled') {
+      return <Icon as={IonIcon} name="close" />;
+    } else if (status === 'pending') {
+      return (
+        <Spinner>
+          <Icon as={IonIcon} name="sync-outline" />
+        </Spinner>
+      );
+    } else if (type === 'in-person') {
+      return <Icon as={IonIcon} name="location" />;
+    } else if (type === 'online') {
+      return <Icon as={IonIcon} name="videocam" />;
+    }
+    return null;
+  };
+
   return (
-    <Box bgColor="gray.100" px={4} py={2} rounded="2xl">
-      <HStack alignItems="center" justifyContent="space-between">
-        <HStack space={2} alignItems="center">
-          <Image
-            rounded="xl"
-            source={{
-              uri: 'https://wallpaperaccess.com/full/317501.jpg',
-            }}
-            alt="Alternate Text"
-            width={60}
-            height={60}
-            resizeMode="cover"
+    <Pressable onPress={openAppointment}>
+      <Box bgColor="gray.100" px={4} py={2} rounded={6}>
+        <HStack alignItems="center" justifyContent="space-between">
+          <HStack space={2} alignItems="center">
+            <Image
+              rounded="xl"
+              source={{
+                uri: doctor.user.photoURL,
+              }}
+              alt={doctor.user.displayName}
+              width={60}
+              height={60}
+              resizeMode="cover"
+            />
+            <Box>
+              <Text fontSize={18} fontWeight="bold">
+                {strMax(doctor.user.displayName, 17)}
+              </Text>
+              <Text>{doctor.speciality}</Text>
+            </Box>
+          </HStack>
+          <IconButton
+            rounded={6}
+            bgColor="secondary.500"
+            icon={<ActionIcon />}
           />
-          <Box>
-            <Text fontSize={18} fontWeight="bold">
-              dr.name
-            </Text>
-            <Text>dr.speciality</Text>
-          </Box>
         </HStack>
-        <IconButton
-          rounded="full"
-          variant="ghost"
-          bgColor="gray.200"
-          icon={<Icon as={IonIcon} name="videocam" size={5} />}
-        />
-      </HStack>
-      <Box bgColor="gray.200" mt={2} p={2} rounded="full">
-        <HStack justifyContent="center" space={2}>
-          {/* <Icon as={Ionicons} name={"newspaper"} size={6} /> */}
-          <Text>sun, jan 19, 08:00 am - 10:00 am</Text>
-        </HStack>
+        <Box bgColor="primary.500" mt={2} p={2} rounded={6}>
+          <HStack justifyContent="center" alignItems="center" space={2}>
+            <Icon as={IonIcon} name="hourglass-outline" color="#fff" size={6} />
+            <Text color="#fff">{new Date(props.date).toUTCString()}</Text>
+          </HStack>
+        </Box>
       </Box>
-    </Box>
+    </Pressable>
   );
 };
 

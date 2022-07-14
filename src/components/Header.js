@@ -4,6 +4,7 @@ import {useSelector} from 'react-redux';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
 import {useNavigation} from '@react-navigation/native';
+import strMax from '../utils/strMax';
 
 const Header = props => {
   const user = useSelector(state => state.user.user);
@@ -34,8 +35,7 @@ const Header = props => {
             <Box>
               <Text fontSize={16}>welcome</Text>
               <Text fontSize={18} fontWeight="black">
-                {user.displayName.slice(0, 15)}
-                {user.displayName.length > 15 ? '...' : ''}
+                {strMax(user.displayName, 15)}
               </Text>
             </Box>
           </HStack>
