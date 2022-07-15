@@ -12,7 +12,7 @@ import React, {useState} from 'react';
 import Tabs from '../components/elements/Tabs';
 import Header from '../components/Header';
 import {DateTimePickerAndroid} from '@react-native-community/datetimepicker';
-import RNPaymobAccept from 'react-native-paymob-accept';
+// import RNPaymobAccept from 'react-native-paymob-accept';
 import {useDispatch, useSelector} from 'react-redux';
 import {setAppointmentProp} from '../redux/slices/appointment';
 
