@@ -55,11 +55,6 @@ const Drawer = ({state: {routeNames, index}, ...props}) => {
         />
         <DrawerItem
           labelStyle={styles.drawerLabel}
-          label="Profile"
-          onPress={() => props.navigation.navigate('Profile')}
-        />
-        <DrawerItem
-          labelStyle={styles.drawerLabel}
           label="About Us"
           onPress={() => props.navigation.navigate('AboutUs')}
         />
@@ -67,11 +62,6 @@ const Drawer = ({state: {routeNames, index}, ...props}) => {
           labelStyle={styles.drawerLabel}
           label="Gallery"
           onPress={() => props.navigation.navigate('Gallery')}
-        />
-        <DrawerItem
-          labelStyle={styles.drawerLabel}
-          label="Videos"
-          onPress={() => props.navigation.navigate('Videos')}
         />
         <DrawerItem
           labelStyle={styles.drawerLabel}

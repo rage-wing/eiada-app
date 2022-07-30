@@ -6,10 +6,14 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Tabbar from './components/Tabbar';
 import Drawer from './components/Drawer';
 
+// screens
 import Home from '../views/Home';
 import Appointment from '../views/Appointment';
 import CreateAppointment from '../views/CreateAppointment';
-import Videos from '../views/Videos';
+import Gallery from '../views/Gallery';
+import ContactUs from '../views/ContactUs';
+import Articles from '../views/Articles';
+import Article from '../views/Article';
 
 const Tabs = createBottomTabNavigator();
 
@@ -24,7 +28,10 @@ const TabMenu = () => {
       <Tabs.Screen name="Home" component={Home} />
       <Tabs.Screen name="Appointment" component={Appointment} />
       <Tabs.Screen name="CreateAppointment" component={CreateAppointment} />
-      <Tabs.Screen name="Videos" component={Videos} />
+      <Tabs.Screen name="Gallery" component={Gallery} />
+      <Tabs.Screen name="ContactUs" component={ContactUs} />
+      <Tabs.Screen name="Articles" component={Articles} />
+      <Tabs.Screen name="Article" component={Article} />
     </Tabs.Navigator>
   );
 };

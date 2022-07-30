@@ -1,7 +1,10 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
-  appointment: null,
+  appointment: {
+    date: new Date().getTime(),
+    gender: 'male',
+  },
 };
 
 export const appointment = createSlice({
@@ -9,7 +12,10 @@ export const appointment = createSlice({
   initialState,
   reducers: {
     setAppointmentProp: (state, action) => {
-      state.appointment = {...state.appointment, ...action.payload};
+      state.appointment = {
+        ...state.appointment,
+        [action.payload.name]: action.payload.value,
+      };
     },
   },
 });

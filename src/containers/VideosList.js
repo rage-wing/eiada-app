@@ -1,21 +1,18 @@
-import {HStack, Image, Pressable, ScrollView, Text, VStack} from 'native-base';
+import {HStack, Image, Pressable, ScrollView, Spinner, Text} from 'native-base';
 import React, {useEffect, useState} from 'react';
 
-import keys from '../config/keys.json';
-import axios from 'axios';
-import Header from '../components/Header';
 import {Linking} from 'react-native';
+import youtube from '../services/youtube';
 
-const Videos = props => {
+const VideosList = props => {
   const [videos, setVideos] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const getVideos = async () => {
-    const res =
-      await axios.get(`https://www.googleapis.com/youtube/v3/search?key=${keys.YT_API_KEY}
-      &channelId=${keys.YT_Channel_ID}
-      &part=snippet,id&order=date&maxResults=20`);
-    const videosItems = res.data.items;
+    setLoading(true);
+    const videosItems = await youtube.getVideos();
     setVideos(videosItems);
+    setLoading(false);
   };
   const openYoutube = videoId => {
     Linking.openURL(`https://www.youtube.com/watch?v=${videoId}`);
@@ -26,10 +23,11 @@ const Videos = props => {
   }, []);
 
   return (
-    <VStack space={4} p={4}>
-      <Header />
-      <ScrollView>
-        <HStack flexWrap="wrap" justifyContent="center" pb={20}>
+    <ScrollView>
+      {loading ? (
+        <Spinner size="lg" />
+      ) : (
+        <HStack flexWrap="wrap" justifyContent="center" pb={32}>
           {videos.map((video, idx) => (
             <Pressable
               key={video.id.videoId}
@@ -52,9 +50,9 @@ const Videos = props => {
             </Pressable>
           ))}
         </HStack>
-      </ScrollView>
-    </VStack>
+      )}
+    </ScrollView>
   );
 };
 
-export default Videos;
+export default VideosList;
