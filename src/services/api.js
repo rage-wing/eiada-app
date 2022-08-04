@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // create axios instance
 const api = axios.create({
-  baseURL: 'http://192.168.1.8:5000/api/',
+  baseURL: 'https://eiada-dr-ahmed.herokuapp.com/api/',
   headers: {
     'Content-Type': 'application/json',
   },
