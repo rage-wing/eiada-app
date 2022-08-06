@@ -1,23 +1,32 @@
 import {
   Box,
-  Button,
   Center,
   HStack,
   Image,
   Pressable,
   Text,
+  useToast,
   VStack,
 } from 'native-base';
 import React from 'react';
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {LoginManager, AccessToken} from 'react-native-fbsdk-next';
+import Toast from '../components/elements/Toast';
 
 const Login = props => {
+  const toast = useToast();
+
+  const showToast = (type, message) => {
+    toast.show({
+      render: () => <Toast type={type} message={message} />,
+    });
+  };
+
   const loginWithGoogle = async () => {
     const {idToken} = await GoogleSignin.signIn();
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-    return auth().signInWithCredential(googleCredential);
+    return loginWithCreds(googleCredential);
   };
   const loginWithFacebook = async () => {
     // Attempt login with permissions
@@ -44,6 +53,23 @@ const Login = props => {
 
     // Sign-in the user with the credential
     return auth().signInWithCredential(facebookCredential);
+  };
+
+  const loginWithCreds = async creds => {
+    try {
+      const res = await auth().signInWithCredential(creds);
+      return res;
+    } catch (error) {
+      if (error.code === 'auth/account-exists-with-different-credential') {
+        const message = 'You have already signed up with a different provider';
+        showToast('error', message);
+      } else if (error.code === 'auth/user-disabled') {
+        const message = 'Your account has been disabled';
+        showToast('error', message);
+      } else {
+        showToast('error', error.code);
+      }
+    }
   };
 
   return (

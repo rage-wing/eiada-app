@@ -26,6 +26,24 @@ const theme = extendTheme({
       800: '#696f11',
       900: '#3f420a',
     },
+    state: {
+      success: {
+        light: '#e6fffa',
+        dark: '#00b894',
+      },
+      error: {
+        light: '#fdd0d0',
+        dark: '#e53e3e',
+      },
+      warning: {
+        light: '#fff5db',
+        dark: '#ffb300',
+      },
+      info: {
+        light: '#dbe6f6',
+        dark: '#00b0ff',
+      },
+    },
   },
   config: {
     useSystemColorMode: false,
