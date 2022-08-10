@@ -22,7 +22,7 @@ const Home = props => {
       const res = await appointmentService.getAll(user._id);
       setAppointments(res.payload);
     })();
-  }, [user._id]);
+  });
 
   return (
     <VStack space={4} p={4}>

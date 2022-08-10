@@ -33,7 +33,7 @@ const Header = props => {
               }}
             />
             <Box>
-              <Text fontSize={16}>welcome</Text>
+              <Text fontSize={16}>welcome </Text>
               <Text fontSize={18} fontWeight="black">
                 {strMax(user.displayName, 15)}
               </Text>
