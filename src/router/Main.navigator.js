@@ -14,6 +14,8 @@ import Gallery from '../views/Gallery';
 import ContactUs from '../views/ContactUs';
 import Articles from '../views/Articles';
 import Article from '../views/Article';
+import PaymentMethod from '../views/PaymentMethod';
+import Payment from '../views/Payment';
 
 const Tabs = createBottomTabNavigator();
 
@@ -32,6 +34,8 @@ const TabMenu = () => {
       <Tabs.Screen name="ContactUs" component={ContactUs} />
       <Tabs.Screen name="Articles" component={Articles} />
       <Tabs.Screen name="Article" component={Article} />
+      <Tabs.Screen name="PaymentMethod" component={PaymentMethod} />
+      <Tabs.Screen name="Payment" component={Payment} />
     </Tabs.Navigator>
   );
 };

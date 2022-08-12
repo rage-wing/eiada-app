@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import Splash from '../views/Splash';
 import Login from '../views/Login';
 import MainNavigator from './Main.navigator';
@@ -21,24 +21,31 @@ const AppNavigator = () => {
     });
   };
 
-  const onAuthStateChanged = async userInfo => {
-    const userData = JSON.parse(JSON.stringify(userInfo, 0, 2));
-    if (userData) {
-      const res = await userService.login(userData);
-      dispatch(setUser(res.payload));
-    } else {
-      dispatch(setUser(null));
-    }
-    if (loading) {
-      setLoading(false);
-    }
-  };
+  const onAuthStateChanged = useCallback(
+    async userInfo => {
+      const userData = JSON.parse(JSON.stringify(userInfo, 0, 2));
+      if (userData) {
+        try {
+          const res = await userService.login(userData);
+          dispatch(setUser(res.payload));
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        dispatch(setUser(null));
+      }
+      if (loading) {
+        setLoading(false);
+      }
+    },
+    [loading, dispatch],
+  );
 
   useEffect(() => {
     googleAuthConfig();
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
     return subscriber; // unsubscribe on unmount
-  }, []);
+  }, [onAuthStateChanged]);
 
   if (loading) {
     return <Splash />;

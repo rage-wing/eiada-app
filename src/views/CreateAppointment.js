@@ -1,28 +1,19 @@
-import {
-  Button,
-  HStack,
-  Input,
-  Modal,
-  Radio,
-  ScrollView,
-  Text,
-  VStack,
-} from 'native-base';
+import {Button, HStack, Radio, VStack} from 'native-base';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import React, {useState} from 'react';
 import Tabs from '../components/elements/Tabs';
 import Header from '../components/Header';
 import DateTimePicker from '../components/elements/DateTimePicker';
-import {useSelector} from 'react-redux';
-import appointment from '../services/appointment';
-
-import IframeRenderer, {iframeModel} from '@native-html/iframe-plugin';
-import RenderHTML from 'react-native-render-html';
-import WebView from 'react-native-webview';
+import {useSelector, useDispatch} from 'react-redux';
+import Field from '../components/elements/Field';
+import {setAppointment} from '../redux/slices/appointment';
+import {useNavigation} from '@react-navigation/native';
 
 const CreateAppointment = props => {
+  const navigation = useNavigation();
   const user = useSelector(state => state.user.user);
+
   const [childName, setChildName] = useState('');
   const [childBirthDate, setChildBirthDate] = useState(new Date());
   const [childGender, setChildGender] = useState('male');
@@ -34,39 +25,23 @@ const CreateAppointment = props => {
   const [userPhoneNumber, setUserPhoneNumber] = useState(user.phoneNumber);
   const [userAddress, setUserAddress] = useState('');
 
-  const [showModal, setShowModal] = useState(false);
-  const [paymentToken, setPaymentToken] = useState('');
+  const dispatch = useDispatch();
 
   const onSubmit = async () => {
-    // const res = await appointment.reserve({
-    //   patient: user._id,
-    //   childName,
-    //   childBirthDate,
-    //   childGender,
-    //   date: appointmentDate,
-    //   time: appointmentTime,
-    //   type: appointmentType,
-    //   userPhoneNumber,
-    //   userAddress,
-    // });
+    const data = {
+      patient: user._id,
+      childName,
+      childBirthDate: childBirthDate.getTime(),
+      childGender,
+      date: appointmentDate.getTime(),
+      time: appointmentTime.getTime(),
+      type: appointmentType,
+      userPhoneNumber,
+      userAddress,
+    };
 
-    // setPaymentToken(res.payload.paymentToken);
-    // console.log(res.payload.paymentToken);
-    setShowModal(true);
-  };
-
-  const renderers = {
-    iframe: IframeRenderer,
-  };
-
-  const customHTMLElementModels = {
-    iframe: iframeModel,
-  };
-
-  const source = {
-    html: `
-      <iframe src="https://accept.paymobsolutions.com/api/acceptance/iframes/255397?payment_token=ZXlKaGJHY2lPaUpJVXpVeE1pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBiblJsWjNKaGRHbHZibDlwWkNJNk5ESXpNREl4TENKaWFXeHNhVzVuWDJSaGRHRWlPbnNpWm1seWMzUmZibUZ0WlNJNklrRmlaR1ZzYUdGdGFXVmtJaXdpYkdGemRGOXVZVzFsSWpvaWJXOXpkR0ZtWVNJc0luTjBjbVZsZENJNklrNUJJaXdpWW5WcGJHUnBibWNpT2lKT1FTSXNJbVpzYjI5eUlqb2lUa0VpTENKaGNHRnlkRzFsYm5RaU9pSk9RU0lzSW1OcGRIa2lPaUpPUVNJc0luTjBZWFJsSWpvaVRrRWlMQ0pqYjNWdWRISjVJam9pVGtFaUxDSmxiV0ZwYkNJNkltRmlaR1ZzYUdGdGFXVmtNakF3UUdkdFlXbHNMbU52YlNJc0luQm9iMjVsWDI1MWJXSmxjaUk2SWlzeU1ERXdNREV3TURFd01DSXNJbkJ2YzNSaGJGOWpiMlJsSWpvaVRrRWlMQ0psZUhSeVlWOWtaWE5qY21sd2RHbHZiaUk2SWs1QkluMHNJbVY0Y0NJNk1UWTJNVEUyT0RjMU55d2liM0prWlhKZmFXUWlPall4T0RZeE56SXdMQ0oxYzJWeVgybGtJam94T0RnNE1qRXNJbUZ0YjNWdWRGOWpaVzUwY3lJNk16VXdNQ3dpWTNWeWNtVnVZM2tpT2lKRlIxQWlMQ0p3Yld0ZmFYQWlPaUkxTkM0eE56QXVNakUzTGpFeklpd2liRzlqYTE5dmNtUmxjbDkzYUdWdVgzQmhhV1FpT21aaGJITmxmUS4xR0M2a1N5aXJHRXp3TGdNRkd0ZndTcFM0cm0xS2lyRmpfUUR2d1JxcUVHUmFwOXhhY2xEakNMV1pKMWJZV1pHT3BpR1dkUWxjVGtMWGRZd3BGeC1xZw" width="100%" height="100%" frameborder="0" allowtransparency="true" allowfullscreen="true"></iframe>
-    `,
+    dispatch(setAppointment(data));
+    navigation.navigate('PaymentMethod');
   };
 
   return (
@@ -81,26 +56,21 @@ const CreateAppointment = props => {
       />
       <KeyboardAwareScrollView>
         <VStack space={4} pb={32}>
-          <Input
-            variant="filled"
-            size="lg"
-            placeholder="child name"
+          <Field
+            label="child name"
             value={childName}
             onChangeText={setChildName}
           />
-          <Input
+          <Field
+            label="phone number"
             keyboardType="phone-pad"
-            variant="filled"
-            size="lg"
-            placeholder="phone number"
             value={userPhoneNumber}
             onChangeText={setUserPhoneNumber}
           />
-          <Input
-            variant="filled"
-            size="lg"
+
+          <Field
+            label="address"
             value={userAddress}
-            placeholder="address"
             onChangeText={setUserAddress}
           />
           <DateTimePicker
@@ -134,43 +104,6 @@ const CreateAppointment = props => {
           <Button onPress={onSubmit}>Reserve Appointment</Button>
         </VStack>
       </KeyboardAwareScrollView>
-
-      <Modal
-        isOpen={showModal}
-        onClose={() => setShowModal(false)}
-        avoidKeyboard
-        justifyContent="flex-end"
-        bottom="4"
-        size="lg">
-        <Modal.Content>
-          <Modal.CloseButton />
-          <Modal.Header>Pay</Modal.Header>
-          <Modal.Body>
-            <ScrollView h="full">
-              <Text>hello</Text>
-              <RenderHTML
-                renderers={renderers}
-                WebView={WebView}
-                source={source}
-                customHTMLElementModels={customHTMLElementModels}
-                defaultWebViewProps={
-                  {
-                    /* Any prop you want to pass to all WebViews */
-                  }
-                }
-                renderersProps={{
-                  iframe: {
-                    scalesPageToFit: true,
-                    webViewProps: {
-                      /* Any prop you want to pass to iframe WebViews */
-                    },
-                  },
-                }}
-              />
-            </ScrollView>
-          </Modal.Body>
-        </Modal.Content>
-      </Modal>
     </VStack>
   );
 };

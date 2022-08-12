@@ -17,12 +17,14 @@ const Home = props => {
   const user = useSelector(state => state.user.user);
   const [appointments, setAppointments] = useState([]);
 
+  const getAppointments = async () => {
+    const res = await appointmentService.getAll(user._id);
+    setAppointments(res.payload);
+  };
+
   useEffect(() => {
-    (async () => {
-      const res = await appointmentService.getAll(user._id);
-      setAppointments(res.payload);
-    })();
-  });
+    getAppointments();
+  }, []);
 
   return (
     <VStack space={4} p={4}>
