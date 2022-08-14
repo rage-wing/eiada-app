@@ -52,7 +52,7 @@ const Login = props => {
     );
 
     // Sign-in the user with the credential
-    return auth().signInWithCredential(facebookCredential);
+    return loginWithCreds(facebookCredential);
   };
 
   const loginWithCreds = async creds => {

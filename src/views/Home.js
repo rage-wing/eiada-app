@@ -13,17 +13,38 @@ import Header from '../components/Header';
 import Appointment from '../components/Appointment';
 import appointmentService from '../services/appointment';
 
+const NoAppointments = () => (
+  <Center my="auto" mt={12}>
+    <Box w="full" h={200}>
+      <Image
+        source={require('../assets/no_appointments.png')}
+        flex={1}
+        alt="no appointments"
+      />
+    </Box>
+    <Text color="gray.400" fontSize="2xl" textAlign="center" fontWeight="bold">
+      you haven't reserved any appointments yet
+    </Text>
+  </Center>
+);
+
 const Home = props => {
   const user = useSelector(state => state.user.user);
-  const [appointments, setAppointments] = useState([]);
+  const [upcomingAppointments, setUpcomingAppointments] = useState([]);
+  const [historyAppointments, setHistoryAppointments] = useState([]);
 
-  const getAppointments = async () => {
+  const getUpcomingAppointments = async () => {
     const res = await appointmentService.getAll(user._id);
-    setAppointments(res.payload);
+    setUpcomingAppointments(res.payload);
+  };
+  const getHistoryAppointments = async () => {
+    const res = await appointmentService.getHistory(user._id);
+    setHistoryAppointments(res.payload);
   };
 
   useEffect(() => {
-    getAppointments();
+    getUpcomingAppointments();
+    getHistoryAppointments();
   }, []);
 
   return (
@@ -34,39 +55,27 @@ const Home = props => {
           Reserve an Appointment
         </Button>
       </Box>
-      {!appointments.length && (
-        <Center my="auto" mt={12}>
-          <Box w="full" h={200}>
-            <Image
-              source={require('../assets/no_appointments.png')}
-              flex={1}
-              alt="no appointments"
-            />
-          </Box>
-          <Text
-            color="gray.400"
-            fontSize="2xl"
-            textAlign="center"
-            fontWeight="bold">
-            you haven't reserved any appointments yet
+
+      <ScrollView>
+        <VStack space={4} pb={40}>
+          <Text fontSize="2xl" fontWeight="black">
+            Upcoming Appointments
           </Text>
-        </Center>
-      )}
-      {!!appointments.length && (
-        <ScrollView>
-          <VStack space={4} pb={40}>
-            <Text fontSize="2xl" fontWeight="black">
-              Upcoming Appointments
-            </Text>
-            {appointments.map(appointment => (
+          {!!upcomingAppointments.length &&
+            upcomingAppointments.map(appointment => (
               <Appointment key={appointment._id} {...appointment} />
             ))}
-            <Text fontSize="2xl" fontWeight="black">
-              History
-            </Text>
-          </VStack>
-        </ScrollView>
-      )}
+          {!upcomingAppointments.length && <NoAppointments />}
+          <Text fontSize="2xl" fontWeight="black">
+            History
+          </Text>
+          {!!historyAppointments.length &&
+            historyAppointments.map(appointment => (
+              <Appointment key={appointment._id} {...appointment} />
+            ))}
+          {!historyAppointments.length && <NoAppointments />}
+        </VStack>
+      </ScrollView>
     </VStack>
   );
 };

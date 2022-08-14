@@ -4,7 +4,10 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import React, {useState} from 'react';
 import Tabs from '../components/elements/Tabs';
 import Header from '../components/Header';
-import DateTimePicker from '../components/elements/DateTimePicker';
+import {
+  DatePicker,
+  DateTimePicker,
+} from '../components/elements/DateTimePicker';
 import {useSelector, useDispatch} from 'react-redux';
 import Field from '../components/elements/Field';
 import {setAppointment} from '../redux/slices/appointment';
@@ -19,7 +22,6 @@ const CreateAppointment = props => {
   const [childGender, setChildGender] = useState('male');
 
   const [appointmentDate, setAppointmentDate] = useState(new Date());
-  const [appointmentTime, setAppointmentTime] = useState(new Date());
   const [appointmentType, setAppointmentType] = useState('online');
 
   const [userPhoneNumber, setUserPhoneNumber] = useState(user.phoneNumber);
@@ -34,7 +36,6 @@ const CreateAppointment = props => {
       childBirthDate: childBirthDate.getTime(),
       childGender,
       date: appointmentDate.getTime(),
-      time: appointmentTime.getTime(),
       type: appointmentType,
       userPhoneNumber,
       userAddress,
@@ -67,29 +68,22 @@ const CreateAppointment = props => {
             value={userPhoneNumber}
             onChangeText={setUserPhoneNumber}
           />
-
           <Field
             label="address"
             value={userAddress}
             onChangeText={setUserAddress}
           />
-          <DateTimePicker
+          <DatePicker
             placeholder="child birthdate"
-            mode="date"
-            dateTime={childBirthDate}
-            setDateTime={setChildBirthDate}
+            date={childBirthDate}
+            setDate={setChildBirthDate}
+            maximumDate={new Date()}
           />
           <DateTimePicker
-            placeholder="Appointment Date"
-            mode="date"
+            placeholder="Appointment date & time"
             dateTime={appointmentDate}
             setDateTime={setAppointmentDate}
-          />
-          <DateTimePicker
-            placeholder="Appointment Time"
-            mode="time"
-            dateTime={appointmentTime}
-            setDateTime={setAppointmentTime}
+            minimumDate={new Date()}
           />
           <Radio.Group
             name="gender"
