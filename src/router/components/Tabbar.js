@@ -41,9 +41,9 @@ const Tabbar = ({state: {routeNames, index}, ...props}) => {
       space={4}
       p={2}
       m={2}>
-      <Tab icon="home" name="Home" currentTab={currentTab} />
+      <Tab icon="home" name="_Home" currentTab={currentTab} />
       <Tab icon="images" name="Gallery" currentTab={currentTab} />
-      <Tab icon="library" name="Articles" currentTab={currentTab} />
+      <Tab icon="library" name="_Articles" currentTab={currentTab} />
       <Tab icon="chatbubble" name="ContactUs" currentTab={currentTab} />
     </HStack>
   );

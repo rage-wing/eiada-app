@@ -2,6 +2,7 @@ import React from 'react';
 
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import Tabbar from './components/Tabbar';
 import Drawer from './components/Drawer';
@@ -18,6 +19,35 @@ import PaymentMethod from '../views/PaymentMethod';
 import Payment from '../views/Payment';
 
 const Tabs = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
+
+const HomeStack = () => {
+  return (
+    <Stack.Navigator
+      initialRouteName="Home"
+      screenOptions={{
+        headerShown: false,
+      }}>
+      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="Appointment" component={Appointment} />
+      <Stack.Screen name="CreateAppointment" component={CreateAppointment} />
+      <Tabs.Screen name="PaymentMethod" component={PaymentMethod} />
+      <Tabs.Screen name="Payment" component={Payment} />
+    </Stack.Navigator>
+  );
+};
+const ArticlesStack = () => {
+  return (
+    <Stack.Navigator
+      initialRouteName="Articles"
+      screenOptions={{
+        headerShown: false,
+      }}>
+      <Tabs.Screen name="Articles" component={Articles} />
+      <Tabs.Screen name="Article" component={Article} />
+    </Stack.Navigator>
+  );
+};
 
 const TabMenu = () => {
   return (
@@ -27,15 +57,10 @@ const TabMenu = () => {
         headerShown: false,
       }}
       tabBar={props => <Tabbar {...props} />}>
-      <Tabs.Screen name="Home" component={Home} />
-      <Tabs.Screen name="Appointment" component={Appointment} />
-      <Tabs.Screen name="CreateAppointment" component={CreateAppointment} />
+      <Tabs.Screen name="_Home" component={HomeStack} />
       <Tabs.Screen name="Gallery" component={Gallery} />
       <Tabs.Screen name="ContactUs" component={ContactUs} />
-      <Tabs.Screen name="Articles" component={Articles} />
-      <Tabs.Screen name="Article" component={Article} />
-      <Tabs.Screen name="PaymentMethod" component={PaymentMethod} />
-      <Tabs.Screen name="Payment" component={Payment} />
+      <Tabs.Screen name="_Articles" component={ArticlesStack} />
     </Tabs.Navigator>
   );
 };
