@@ -7,13 +7,6 @@ import {Provider} from 'react-redux';
 import {store} from './src/redux/store';
 import AppNavigator from './src/router/App.navigator';
 
-import * as Sentry from '@sentry/react-native';
-
-Sentry.init({
-  dsn: 'https://d173e589bad546d59d5c8d86075ee564@o1369145.ingest.sentry.io/6672097',
-  tracesSampleRate: 1.0,
-});
-
 const NavigationTheme = {
   ...DefaultTheme,
   colors: {
@@ -36,4 +29,4 @@ const App = () => {
   );
 };
 
-export default Sentry.wrap(App);
+export default App;
