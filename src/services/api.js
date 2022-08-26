@@ -6,8 +6,7 @@ import envLive from '../config/env.live.json';
 
 // create axios instance
 const api = axios.create({
-  baseURL:
-    process.env.NODE_ENV === 'development' ? env.API_HOST : envLive.API_HOST,
+  baseURL: envLive.API_HOST,
   headers: {
     'Content-Type': 'application/json',
   },
