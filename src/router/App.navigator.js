@@ -10,7 +10,7 @@ import keys from '../config/keys.json';
 import userService from '../services/user';
 
 const AppNavigator = () => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const user = useSelector(state => state.user.user);
   const dispatch = useDispatch();
 
@@ -26,19 +26,18 @@ const AppNavigator = () => {
       const userData = JSON.parse(JSON.stringify(userInfo, 0, 2));
       if (userData) {
         try {
+          setLoading(true);
           const res = await userService.login(userData);
           dispatch(setUser(res.payload));
+          setLoading(false);
         } catch (error) {
           console.log(error);
         }
       } else {
         dispatch(setUser(null));
       }
-      if (loading) {
-        setLoading(false);
-      }
     },
-    [loading, dispatch],
+    [dispatch],
   );
 
   useEffect(() => {
@@ -52,6 +51,10 @@ const AppNavigator = () => {
   }
   if (!user) {
     return <Login />;
+  }
+
+  if (user.role === 'doctor') {
+    return <MainNavigator />; // here should be doctor navigator instead
   }
 
   return <MainNavigator />;

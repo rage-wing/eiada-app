@@ -56,7 +56,7 @@ const Drawer = ({state: {routeNames, index}, ...props}) => {
         <DrawerItem
           labelStyle={styles.drawerLabel}
           label="About Us"
-          onPress={() => props.navigation.navigate('AboutUs')}
+          onPress={() => props.navigation.navigate('About')}
         />
         <DrawerItem
           labelStyle={styles.drawerLabel}

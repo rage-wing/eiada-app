@@ -17,6 +17,8 @@ import Articles from '../views/Articles';
 import Article from '../views/Article';
 import PaymentMethod from '../views/PaymentMethod';
 import Payment from '../views/Payment';
+import Offers from '../views/Offers';
+import About from '../views/About';
 
 const Tabs = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -33,6 +35,8 @@ const HomeStack = () => {
       <Stack.Screen name="CreateAppointment" component={CreateAppointment} />
       <Tabs.Screen name="PaymentMethod" component={PaymentMethod} />
       <Tabs.Screen name="Payment" component={Payment} />
+      <Tabs.Screen name="Offers" component={Offers} />
+      <Tabs.Screen name="About" component={About} />
     </Stack.Navigator>
   );
 };

@@ -1,4 +1,4 @@
-import {Box, Center, HStack, Image, Text} from 'native-base';
+import {Box, Center, HStack, Image, Spinner, Text} from 'native-base';
 import React from 'react';
 
 const Splash = props => {
@@ -20,6 +20,7 @@ const Splash = props => {
           Ahmed Dabour
         </Text>
       </HStack>
+      <Spinner />
     </Center>
   );
 };

@@ -22,38 +22,38 @@ const Payment = props => {
   const {width, height} = useWindowDimensions();
   const appointment = useSelector(state => state.appointment.appointment);
 
-  const [paymentToken, setPaymentToken] = useState('');
+  const [csk, setCsk] = useState('');
   const [iframe, setIframe] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const generatePaymentToken = useCallback(async () => {
-    setLoading(true);
-    setIframe(null);
+  const createIntention = useCallback(async () => {
     try {
+      setLoading(true);
+      setIframe(null);
       const res = await api.post(
-        '/patient/appointment/generate-payment-token',
-        {
-          patient: appointment.patient,
-        },
+        `/patient/appointment/${appointment.patient}/reserve`,
       );
-      setPaymentToken(res.data.payload);
+      console.log(res.data);
+      setCsk(res.data.payload.client_secret);
+      setLoading(false);
     } catch (error) {
-      console.log(error.response.data);
+      setLoading(false);
+      console.log(error);
     }
   }, [appointment]);
 
   useEffect(() => {
-    generatePaymentToken();
-  }, [generatePaymentToken]);
+    createIntention();
+  }, [createIntention]);
 
   useEffect(() => {
-    if (paymentToken) {
+    if (csk) {
       setIframe({
-        html: `<iframe src="https://accept.paymobsolutions.com/api/acceptance/iframes/255397?payment_token=${paymentToken}" width="${width}" height="${height}"></iframe>`,
+        html: `<iframe src="https://eiada-pay.vercel.app/?csk=${csk}" width="${width}" height="${height}"></iframe>`,
       });
       setLoading(false);
     }
-  }, [paymentToken, width, height]);
+  }, [csk, width, height]);
 
   return (
     <VStack>

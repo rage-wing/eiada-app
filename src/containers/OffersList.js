@@ -1,25 +1,22 @@
 import {HStack, Image, Pressable, ScrollView, Spinner} from 'native-base';
 import React, {useEffect, useState} from 'react';
-import image from '../services/image';
+import {Linking} from 'react-native';
+import offer from '../services/offer';
 
-const ImagesList = props => {
-  const [images, setImages] = useState([]);
+const OffersList = props => {
+  const [offers, setOffers] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const getImages = async () => {
+  const getOffers = async () => {
     setLoading(true);
-    const {payload} = await image.getAll();
-    setImages(payload.docs);
+    const {payload} = await offer.getAll();
+    setOffers(payload.docs);
     setLoading(false);
   };
 
   useEffect(() => {
-    getImages();
+    getOffers();
   }, []);
-
-  const onPress = img => {
-    console.log(img);
-  };
 
   return (
     <ScrollView>
@@ -27,16 +24,16 @@ const ImagesList = props => {
         <Spinner size="lg" />
       ) : (
         <HStack flexWrap="wrap" justifyContent="center" pb={32}>
-          {images.map((img, idx) => (
+          {offers.map((img, idx) => (
             <Pressable
               key={img._id}
-              onPress={() => onPress(img.originalname)}
+              onPress={() => Linking.openURL(img.url)}
               m={1}
               rounded={6}
               width={150}>
               <Image
-                source={{uri: img.url}}
-                alt={img.originalname}
+                source={{uri: img.thumbnail}}
+                alt={img.url}
                 height={140}
                 rounded={6}
               />
@@ -48,4 +45,4 @@ const ImagesList = props => {
   );
 };
 
-export default ImagesList;
+export default OffersList;

@@ -41,7 +41,7 @@ const ArticlesList = props => {
       ) : (
         <VStack pb={32}>
           {articles.map((article, idx) => (
-            <Pressable onPress={() => onPress(article)}>
+            <Pressable key={article._id} onPress={() => onPress(article)}>
               <Box m={2} p={2} rounded="md" bgColor="gray.100">
                 <VStack space={2}>
                   <Text color="gray.400">
