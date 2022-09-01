@@ -15,7 +15,7 @@ import Gallery from '../views/Gallery';
 import ContactUs from '../views/ContactUs';
 import Articles from '../views/Articles';
 import Article from '../views/Article';
-import PaymentMethod from '../views/PaymentMethod';
+import Checkout from '../views/Checkout';
 import Payment from '../views/Payment';
 import Offers from '../views/Offers';
 import About from '../views/About';
@@ -33,7 +33,7 @@ const HomeStack = () => {
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="Appointment" component={Appointment} />
       <Stack.Screen name="CreateAppointment" component={CreateAppointment} />
-      <Tabs.Screen name="PaymentMethod" component={PaymentMethod} />
+      <Tabs.Screen name="Checkout" component={Checkout} />
       <Tabs.Screen name="Payment" component={Payment} />
       <Tabs.Screen name="Offers" component={Offers} />
       <Tabs.Screen name="About" component={About} />

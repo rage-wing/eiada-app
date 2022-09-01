@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   Box,
   Button,
@@ -33,19 +33,20 @@ const Home = props => {
   const [upcomingAppointments, setUpcomingAppointments] = useState([]);
   const [historyAppointments, setHistoryAppointments] = useState([]);
 
-  const getUpcomingAppointments = async () => {
+  const getUpcomingAppointments = useCallback(async () => {
     const res = await appointmentService.getAll(user._id);
     setUpcomingAppointments(res.payload);
-  };
-  const getHistoryAppointments = async () => {
+  }, [user._id]);
+
+  const getHistoryAppointments = useCallback(async () => {
     const res = await appointmentService.getHistory(user._id);
     setHistoryAppointments(res.payload);
-  };
+  }, [user._id]);
 
   useEffect(() => {
     getUpcomingAppointments();
     getHistoryAppointments();
-  }, []);
+  }, [getHistoryAppointments, getUpcomingAppointments]);
 
   return (
     <VStack space={4} p={4}>
@@ -58,22 +59,29 @@ const Home = props => {
 
       <ScrollView>
         <VStack space={4} pb={40}>
-          <Text fontSize="2xl" fontWeight="black">
-            Upcoming Appointments
-          </Text>
-          {!!upcomingAppointments.length &&
-            upcomingAppointments.map(appointment => (
-              <Appointment key={appointment._id} {...appointment} />
-            ))}
-          {!upcomingAppointments.length && <NoAppointments />}
-          <Text fontSize="2xl" fontWeight="black">
-            History
-          </Text>
-          {!!historyAppointments.length &&
-            historyAppointments.map(appointment => (
-              <Appointment key={appointment._id} {...appointment} />
-            ))}
-          {!historyAppointments.length && <NoAppointments />}
+          {!!upcomingAppointments.length && (
+            <>
+              <Text fontSize="2xl" fontWeight="black">
+                Upcoming Appointments
+              </Text>
+              {upcomingAppointments.map(appointment => (
+                <Appointment key={appointment._id} {...appointment} />
+              ))}
+            </>
+          )}
+          {!!historyAppointments.length && (
+            <>
+              <Text fontSize="2xl" fontWeight="black">
+                History
+              </Text>
+              {historyAppointments.map(appointment => (
+                <Appointment key={appointment._id} {...appointment} />
+              ))}
+            </>
+          )}
+          {!historyAppointments.length && !upcomingAppointments.length && (
+            <NoAppointments />
+          )}
         </VStack>
       </ScrollView>
     </VStack>

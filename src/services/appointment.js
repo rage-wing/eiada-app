@@ -14,7 +14,7 @@ const appointment = (() => {
     return res.data;
   };
   const reserve = async data => {
-    const res = await api.post('patient/appointment/reserve', {
+    const res = await api.post(`patient/appointment/${data.patient}/reserve`, {
       doctor: '62cc29ffeb2fe06ff7211bb0',
       ...data,
     });

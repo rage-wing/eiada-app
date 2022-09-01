@@ -1,7 +1,7 @@
 import {Button, HStack, Radio, VStack} from 'native-base';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import Tabs from '../components/elements/Tabs';
 import Header from '../components/Header';
 import {
@@ -12,6 +12,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import Field from '../components/elements/Field';
 import {setAppointment} from '../redux/slices/appointment';
 import {useNavigation} from '@react-navigation/native';
+import appointmentService from '../services/appointment';
 
 const CreateAppointment = props => {
   const navigation = useNavigation();
@@ -29,6 +30,16 @@ const CreateAppointment = props => {
 
   const dispatch = useDispatch();
 
+  const reserve = async data => {
+    try {
+      const res = await appointmentService.reserve(data);
+      dispatch(setAppointment({data, payment: res.payload}));
+      navigation.navigate('Checkout');
+    } catch (error) {
+      console.log(error.response.data);
+    }
+  };
+
   const onSubmit = async () => {
     const data = {
       patient: user._id,
@@ -37,12 +48,10 @@ const CreateAppointment = props => {
       childGender,
       date: appointmentDate.getTime(),
       type: appointmentType,
-      userPhoneNumber,
+      phone: userPhoneNumber,
       userAddress,
     };
-
-    dispatch(setAppointment(data));
-    navigation.navigate('PaymentMethod');
+    reserve(data);
   };
 
   return (
