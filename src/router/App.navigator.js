@@ -31,7 +31,7 @@ const AppNavigator = () => {
           dispatch(setUser(res.payload));
           setLoading(false);
         } catch (error) {
-          console.log(error);
+          alert(error);
         }
       } else {
         dispatch(setUser(null));

@@ -21,11 +21,18 @@ const appointment = (() => {
     return res.data;
   };
 
+  const calcPayment = async data => {
+    console.log(data);
+    const res = await api.post('patient/appointment/calc-payment', data);
+    return res.data;
+  };
+
   return {
     getAll,
     reserve,
     getUpcoming,
     getHistory,
+    calcPayment,
   };
 })();
 

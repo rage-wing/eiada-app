@@ -27,6 +27,7 @@ const CreateAppointment = props => {
 
   const [userPhoneNumber, setUserPhoneNumber] = useState(user.phoneNumber);
   const [userAddress, setUserAddress] = useState('');
+  const [promo, setPromo] = useState('');
 
   const dispatch = useDispatch();
 
@@ -49,6 +50,7 @@ const CreateAppointment = props => {
       date: appointmentDate.getTime(),
       type: appointmentType,
       phone: userPhoneNumber,
+      promoCode: promo,
       userAddress,
     };
     reserve(data);
@@ -88,6 +90,7 @@ const CreateAppointment = props => {
             setDate={setChildBirthDate}
             maximumDate={new Date()}
           />
+          <Field label="promo code" value={promo} onChangeText={setPromo} />
           <DateTimePicker
             placeholder="Appointment date & time"
             dateTime={appointmentDate}

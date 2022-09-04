@@ -24,9 +24,13 @@ const Login = props => {
   };
 
   const loginWithGoogle = async () => {
-    const {idToken} = await GoogleSignin.signIn();
-    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-    return loginWithCreds(googleCredential);
+    try {
+      const {idToken} = await GoogleSignin.signIn();
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+      return loginWithCreds(googleCredential);
+    } catch (error) {
+      return null;
+    }
   };
   const loginWithFacebook = async () => {
     // Attempt login with permissions

@@ -9,7 +9,13 @@ const Checkout = props => {
   const appointment = useSelector(state => state.appointment.appointment);
   const navigation = useNavigation();
 
+  const messages = {
+    online: 'for online reservation with doctor Ahmed dabour',
+    'in-person': 'for in person reservation with doctor Ahmed dabour',
+  };
+
   const checkout = () => {
+    console.log(appointment);
     navigation.navigate('Payment');
   };
 
@@ -29,11 +35,11 @@ const Checkout = props => {
       <Box bg="gray.100" height="full" pt={10} px={4}>
         <Text textAlign="center">Total Payout</Text>
         <Text fontSize={48} fontWeight="black" textAlign="center">
-          152.29 USD
+          {appointment?.payment?.intention_detail?.amount / 100} EGP
         </Text>
         <Box bg="white" mx={4} p={2}>
           <Text color="primary.500" textAlign="center">
-            in person reservation with doctor Ahmed dabour
+            {messages[appointment?.data?.type]}
           </Text>
         </Box>
         <Box my={4}>
