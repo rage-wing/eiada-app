@@ -8,6 +8,8 @@ import {useSelector, useDispatch} from 'react-redux';
 import {setUser} from '../redux/slices/user';
 import keys from '../config/keys.json';
 import userService from '../services/user';
+import DoctorNavigator from './Doctor.navigator';
+import Alert from '../components/Alert';
 
 const AppNavigator = () => {
   const [loading, setLoading] = useState(false);
@@ -54,7 +56,12 @@ const AppNavigator = () => {
   }
 
   if (user.role === 'doctor') {
-    return <MainNavigator />; // here should be doctor navigator instead
+    return (
+      <>
+        <Alert />
+        <DoctorNavigator />
+      </>
+    );
   }
 
   return <MainNavigator />;
