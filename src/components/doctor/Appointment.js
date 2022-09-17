@@ -1,14 +1,35 @@
 import {Box, HStack, Image, Text, Button, VStack} from 'native-base';
 import React from 'react';
+import {Alert} from 'react-native';
+import doctor from '../../services/doctor';
 import strMax from '../../utils/strMax';
 
 const Appointment = props => {
-  const {patient} = props;
+  const {patient, refresh} = props;
 
-  const accept = async () => {};
+  const onAccept = async () => {
+    Alert.alert(
+      'are you sure?',
+      'are you sure you want to accept the appointment',
+      [{text: 'Yes', onPress: accept}, {text: 'No'}],
+    );
+  };
 
+  const onReject = async () => {
+    Alert.alert(
+      'are you sure?',
+      'are you sure you want to reject the appointment',
+      [{text: 'Yes', onPress: reject}, {text: 'No'}],
+    );
+  };
+
+  const accept = async () => {
+    await doctor.accept(props._id);
+    refresh();
+  };
   const reject = async () => {
-    console.log('reject');
+    await doctor.reject(props._id);
+    refresh();
   };
 
   return (
@@ -33,10 +54,10 @@ const Appointment = props => {
       </HStack>
       {['draft', 'pending'].includes(props.status) && (
         <HStack space={2}>
-          <Button w="1/2" colorScheme="success" onPress={accept}>
+          <Button w="1/2" colorScheme="success" onPress={onAccept}>
             accept
           </Button>
-          <Button w="1/2" colorScheme="danger" onPress={reject}>
+          <Button w="1/2" colorScheme="danger" onPress={onReject}>
             reject
           </Button>
         </HStack>

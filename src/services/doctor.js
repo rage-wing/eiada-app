@@ -10,9 +10,21 @@ const doctor = (() => {
     return res.data;
   };
 
+  const accept = async id => {
+    const res = await api.post(`/doctor/appointment/accept/${id}`);
+    return res.data;
+  };
+
+  const reject = async id => {
+    const res = await api.post(`/doctor/appointment/reject/${id}`);
+    return res.data;
+  };
+
   return {
     getUpcomingAppointments,
     getPendingAppointments,
+    accept,
+    reject,
   };
 })();
 

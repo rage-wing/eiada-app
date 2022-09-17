@@ -6,7 +6,7 @@ import envLive from '../config/env.live.json';
 
 // create axios instance
 const api = axios.create({
-  baseURL: envLive.API_HOST,
+  baseURL: env.API_HOST,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -18,6 +18,7 @@ axios.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    console.log(config.url);
     return config;
   },
   error => {
