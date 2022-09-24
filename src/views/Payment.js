@@ -1,4 +1,4 @@
-import {Box, Spinner, Text, VStack} from 'native-base';
+import {Box, ScrollView, Spinner, Text, VStack} from 'native-base';
 import React, {useCallback, useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 import Header from '../components/Header';
@@ -27,8 +27,9 @@ const Payment = props => {
 
   useEffect(() => {
     if (appointment?.payment?.client_secret) {
+      console.log(appointment?.payment?.client_secret);
       setIframe({
-        html: `<iframe src="https://eiada-pay.vercel.app/?csk=${appointment?.payment?.client_secret}" width="${width}" height="${height}"></iframe>`,
+        html: `<iframe src="https://eiada-pay.vercel.app/?csk=${appointment?.payment?.client_secret}" width="${width}""></iframe>`,
       });
       setLoading(false);
     }
@@ -40,7 +41,7 @@ const Payment = props => {
         <Header />
       </Box>
       {loading && <Spinner />}
-      <KeyboardAwareScrollView>
+      <VStack bgColor={'#0f0'}>
         {iframe && (
           <RenderHTML
             renderers={renderers}
@@ -50,7 +51,7 @@ const Payment = props => {
             contentWidth={width}
           />
         )}
-      </KeyboardAwareScrollView>
+      </VStack>
     </VStack>
   );
 };

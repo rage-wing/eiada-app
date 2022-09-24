@@ -5,6 +5,8 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 
 import {useNavigation} from '@react-navigation/native';
 import strMax from '../utils/strMax';
+import auth from '@react-native-firebase/auth';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 const Header = props => {
   const user = useSelector(state => state.user.user);
@@ -14,16 +16,23 @@ const Header = props => {
     navigation.navigate(to);
   };
 
+  const logout = async () => {
+    await GoogleSignin.signOut();
+    return auth().signOut();
+  };
+
   return (
     <HStack alignItems="center" justifyContent="space-between">
       <HStack alignItems="center" space={2}>
-        <Icon
-          as={IonIcon}
-          onPress={navigation.openDrawer}
-          name="menu-outline"
-          size={6}
-          color="#000"
-        />
+        {user.role !== 'doctor' && (
+          <Icon
+            as={IonIcon}
+            onPress={navigation.openDrawer}
+            name="menu-outline"
+            size={6}
+            color="#000"
+          />
+        )}
         <Pressable onPress={() => navigate('Profile')}>
           <HStack space={2}>
             <Avatar
@@ -41,6 +50,15 @@ const Header = props => {
           </HStack>
         </Pressable>
       </HStack>
+      {user.role === 'doctor' && (
+        <Icon
+          as={IonIcon}
+          onPress={logout}
+          name="exit-outline"
+          size={6}
+          color="danger.500"
+        />
+      )}
     </HStack>
   );
 };

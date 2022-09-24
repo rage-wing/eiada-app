@@ -3,10 +3,13 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {RefreshControl} from 'react-native';
 import image from '../../services/image';
 import {launchImageLibrary} from 'react-native-image-picker';
+import Alert from '../../components/elements/Alert';
 
 const ImagesList = props => {
   const [images, setImages] = useState([]);
-  const [refreshing, setRefreshing] = React.useState(false);
+  const [deleteImageModalOpen, setDeleteImageModalOpen] = useState(false);
+  const [currentImageIdx, setCurrentImageIdx] = useState();
+  const [refreshing, setRefreshing] = useState(false);
 
   const getImages = useCallback(async () => {
     const {payload} = await image.getAll();
@@ -27,8 +30,15 @@ const ImagesList = props => {
     console.log(img);
   };
 
-  const remove = async id => {
-    await image.remove(id);
+  const remove = async idx => {
+    try {
+      const arr = [...images];
+      await image.remove(images[idx]._id);
+      arr.splice(idx, 1);
+      setImages(arr);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const upload = async () => {
@@ -37,9 +47,8 @@ const ImagesList = props => {
         includeBase64: true,
       });
       const file = result.assets[0];
-      console.log(file);
-      const res = await image.upload(file);
-      console.log(res);
+      const res = await image.upload(file.base64);
+      setImages([...images, res.payload]);
     } catch (error) {
       console.log(error);
     }
@@ -51,24 +60,35 @@ const ImagesList = props => {
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }>
       <VStack pb={32}>
+        <Alert
+          isOpen={deleteImageModalOpen}
+          setIsOpen={setDeleteImageModalOpen}
+          title="delete image"
+          body="are you sure you want to delete this image"
+          onConfirm={() => remove(currentImageIdx)}
+        />
         {images.map((img, idx) => (
           <Pressable
             key={img._id}
-            onPress={() => onPress(img.originalname)}
+            onPress={() => onPress(img)}
             m={1}
             rounded={6}>
             <Image
-              // source={{uri: img.url}}
               source={{
-                uri: 'https://images.pexels.com/photos/13292768/pexels-photo-13292768.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load',
+                uri: img.url,
               }}
-              alt={img.originalname}
+              alt={img.url}
               height={140}
               rounded={6}
               resizeMode="cover"
             />
             <Box position="absolute" bottom={4} right={4}>
-              <Button colorScheme="danger" onPress={() => remove(img._id)}>
+              <Button
+                colorScheme="danger"
+                onPress={() => {
+                  setCurrentImageIdx(idx);
+                  setDeleteImageModalOpen(true);
+                }}>
                 remove
               </Button>
             </Box>

@@ -14,7 +14,6 @@ const Article = props => {
     html: `
       <div style="color:#000;">
         <img src="${article.thumbnail}" alt="${article.title}" />
-        <a href="http://www.google.com" target="_blank">${article.title}</a>
         ${article.content}
       </div>
     `,

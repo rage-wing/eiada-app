@@ -1,5 +1,4 @@
 import {api} from './api';
-import RNFS from 'react-native-fs';
 
 const image = (() => {
   const getAll = async () => {
