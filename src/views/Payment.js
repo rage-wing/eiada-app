@@ -1,14 +1,12 @@
-import {Box, ScrollView, Spinner, Text, VStack} from 'native-base';
-import React, {useCallback, useEffect, useState} from 'react';
+import {Box, Spinner, VStack} from 'native-base';
+import React, {useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 import Header from '../components/Header';
-import {api} from '../services/api';
 import {useWindowDimensions} from 'react-native';
 
 import IframeRenderer, {iframeModel} from '@native-html/iframe-plugin';
 import RenderHTML from 'react-native-render-html';
 import WebView from 'react-native-webview';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const renderers = {
   iframe: IframeRenderer,
@@ -27,9 +25,8 @@ const Payment = props => {
 
   useEffect(() => {
     if (appointment?.payment?.client_secret) {
-      console.log(appointment?.payment?.client_secret);
       setIframe({
-        html: `<iframe src="https://eiada-pay.vercel.app/?csk=${appointment?.payment?.client_secret}" width="${width}""></iframe>`,
+        html: `<iframe src="https://eiada-pay.vercel.app/?csk=${appointment?.payment?.client_secret}&id=${appointment?.payment?.id}" width="${width}""></iframe>`,
       });
       setLoading(false);
     }

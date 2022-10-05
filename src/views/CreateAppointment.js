@@ -49,7 +49,7 @@ const CreateAppointment = props => {
       childGender,
       date: appointmentDate.getTime(),
       type: appointmentType,
-      phone: userPhoneNumber,
+      userPhoneNumber,
       promoCode: promo,
       userAddress,
     };
