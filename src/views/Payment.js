@@ -1,12 +1,20 @@
-import {Box, Spinner, VStack} from 'native-base';
+import {
+  Box,
+  KeyboardAvoidingView,
+  ScrollView,
+  Spinner,
+  Text,
+  VStack,
+} from 'native-base';
 import React, {useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 import Header from '../components/Header';
-import {useWindowDimensions} from 'react-native';
+import {Platform, useWindowDimensions} from 'react-native';
 
 import IframeRenderer, {iframeModel} from '@native-html/iframe-plugin';
 import RenderHTML from 'react-native-render-html';
 import WebView from 'react-native-webview';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const renderers = {
   iframe: IframeRenderer,
@@ -25,29 +33,39 @@ const Payment = props => {
 
   useEffect(() => {
     if (appointment?.payment?.client_secret) {
+      console.log(appointment?.payment?.id);
       setIframe({
-        html: `<iframe src="https://eiada-pay.vercel.app/?csk=${appointment?.payment?.client_secret}&id=${appointment?.payment?.id}" width="${width}""></iframe>`,
+        html: `<iframe src="https://eiada-pay.vercel.app/?csk=${
+          appointment?.payment?.client_secret
+        }&id=${appointment?.payment?.id}" width="${width}" height="${
+          height - 170
+        }"></iframe>`,
       });
       setLoading(false);
     }
   }, [appointment, width, height]);
 
   return (
-    <VStack>
+    <VStack flex={1}>
       <Box p={4}>
         <Header />
       </Box>
       {loading && <Spinner />}
-      <VStack bgColor={'#0f0'}>
-        {iframe && (
-          <RenderHTML
-            renderers={renderers}
-            WebView={WebView}
-            source={iframe}
-            customHTMLElementModels={customHTMLElementModels}
-            contentWidth={width}
-          />
-        )}
+      <VStack flex={1} bgColor="red.300">
+        <KeyboardAwareScrollView
+          behavior={Platform.select({ios: 'position', android: null})}
+          enabled>
+          {iframe && (
+            <RenderHTML
+              renderers={renderers}
+              WebView={WebView}
+              source={iframe}
+              customHTMLElementModels={customHTMLElementModels}
+              contentWidth={width}
+              contentHeight={height}
+            />
+          )}
+        </KeyboardAwareScrollView>
       </VStack>
     </VStack>
   );
