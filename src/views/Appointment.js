@@ -5,6 +5,7 @@ import Profile from '../components/Profile';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import Spinner from '../components/Spinner';
 import moment from 'moment';
+import {Linking} from 'react-native';
 
 const Appointment = props => {
   const appointment = props.route.params;
@@ -35,6 +36,10 @@ const Appointment = props => {
     return () => clearInterval(interval);
   }, [appointment.date]);
 
+  const openAppointment = async () => {
+    await Linking.openURL(appointment.link);
+  };
+
   return (
     <VStack space={4} p={4}>
       <Header />
@@ -49,6 +54,7 @@ const Appointment = props => {
             colorScheme="secondary"
             rounded="full"
             variant="solid"
+            onPress={openAppointment}
             _icon={{
               as: IonIcon,
               name: appointment.type === 'in-person' ? 'location' : 'videocam',

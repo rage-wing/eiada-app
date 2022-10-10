@@ -9,12 +9,13 @@ import {
 import React, {useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 import Header from '../components/Header';
-import {Platform, useWindowDimensions} from 'react-native';
+import {BackHandler, Platform, useWindowDimensions} from 'react-native';
 
 import IframeRenderer, {iframeModel} from '@native-html/iframe-plugin';
 import RenderHTML from 'react-native-render-html';
 import WebView from 'react-native-webview';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {useNavigation} from '@react-navigation/native';
 
 const renderers = {
   iframe: IframeRenderer,
@@ -27,6 +28,7 @@ const customHTMLElementModels = {
 const Payment = props => {
   const {width, height} = useWindowDimensions();
   const appointment = useSelector(state => state.appointment.appointment);
+  const navigation = useNavigation();
 
   const [iframe, setIframe] = useState();
   const [loading, setLoading] = useState(false);
@@ -44,6 +46,20 @@ const Payment = props => {
       setLoading(false);
     }
   }, [appointment, width, height]);
+
+  useEffect(() => {
+    const backAction = () => {
+      navigation.navigate('Home');
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+  }, [navigation]);
 
   return (
     <VStack flex={1}>

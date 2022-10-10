@@ -12,6 +12,8 @@ import {useSelector} from 'react-redux';
 import Header from '../components/Header';
 import Appointment from '../components/Appointment';
 import appointmentService from '../services/appointment';
+import {useIsFocused} from '@react-navigation/native';
+import {RefreshControl} from 'react-native';
 
 const NoAppointments = () => (
   <Center my="auto" mt={12}>
@@ -32,9 +34,17 @@ const Home = props => {
   const user = useSelector(state => state.user.user);
   const [upcomingAppointments, setUpcomingAppointments] = useState([]);
   const [historyAppointments, setHistoryAppointments] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+  const isFocused = useIsFocused();
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await Promise.all([getUpcomingAppointments(), getHistoryAppointments()]);
+    setRefreshing(false);
+  }, [getHistoryAppointments, getUpcomingAppointments]);
 
   const getUpcomingAppointments = useCallback(async () => {
-    const res = await appointmentService.getAll(user._id);
+    const res = await appointmentService.getUpcoming(user._id);
     setUpcomingAppointments(res.payload);
   }, [user._id]);
 
@@ -44,9 +54,8 @@ const Home = props => {
   }, [user._id]);
 
   useEffect(() => {
-    getUpcomingAppointments();
-    getHistoryAppointments();
-  }, [getHistoryAppointments, getUpcomingAppointments]);
+    onRefresh();
+  }, [onRefresh, isFocused]);
 
   return (
     <VStack space={4} p={4}>
@@ -57,7 +66,10 @@ const Home = props => {
         </Button>
       </Box>
 
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
         <VStack space={4} pb={40}>
           {!!upcomingAppointments.length && (
             <>

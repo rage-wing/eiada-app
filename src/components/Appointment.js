@@ -25,6 +25,11 @@ const Appointment = props => {
 
     if (status === 'cancelled') {
       return <Icon as={IonIcon} name="close" />;
+    } else if (
+      status === 'pending' &&
+      new Date(props.date).getTime() < new Date().getTime()
+    ) {
+      return <Icon as={IonIcon} name="close" />;
     } else if (status === 'pending') {
       return (
         <Spinner>
