@@ -9,6 +9,7 @@ import Images from '../views/Doctor/Images';
 import Articles from '../views/Doctor/Articles';
 import Article from '../views/Article';
 import EditArticle from '../views/Doctor/EditArticle';
+import CreateArticle from '../views/Doctor/CreateArticle';
 
 const Tabs = createBottomTabNavigator();
 
@@ -24,6 +25,7 @@ const ArticlesStack = () => {
       <Tabs.Screen name="Articles" component={Articles} />
       <Tabs.Screen name="Article" component={Article} />
       <Tabs.Screen name="EditArticle" component={EditArticle} />
+      <Tabs.Screen name="CreateArticle" component={CreateArticle} />
     </Stack.Navigator>
   );
 };

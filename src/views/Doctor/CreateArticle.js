@@ -15,13 +15,12 @@ import Field from '../../components/elements/Field';
 import Header from '../../components/Header';
 import articleService from '../../services/article';
 
-const EditArticle = props => {
-  const article = props.route.params.article;
+const CreateArticle = props => {
   const richText = useRef();
-  let contentRef = useRef(article.content);
-  const [title, setTitle] = useState(article.title);
+  let contentRef = useRef();
+  const [title, setTitle] = useState();
   const [thumbnail, setThumbnail] = useState();
-  const [thumbnailUrl, setThumbnailUrl] = useState(article.thumbnail);
+  const [thumbnailUrl, setThumbnailUrl] = useState();
   const navigation = useNavigation();
 
   const changeThumbnail = useCallback(async () => {
@@ -29,7 +28,6 @@ const EditArticle = props => {
       includeBase64: true,
     });
     const file = result.assets[0];
-    console.log(file.uri);
     setThumbnailUrl(file.uri);
     setThumbnail(file.base64);
   }, []);
@@ -47,12 +45,12 @@ const EditArticle = props => {
       if (thumbnail) {
         payload.thumbnail = thumbnail;
       }
-      await articleService.edit(article._id, payload);
+      await articleService.create(payload);
       navigation.navigate('Articles');
     } catch (error) {
       console.log(error.message);
     }
-  }, [article._id, navigation, thumbnail, title]);
+  }, [navigation, thumbnail, title]);
 
   return (
     <VStack space={4} p={4}>
@@ -75,7 +73,7 @@ const EditArticle = props => {
               w="full"
               h="full">
               <Text m="auto" color="white">
-                Change Thumbnail
+                Add Thumbnail
               </Text>
             </Box>
             <Image
@@ -99,7 +97,7 @@ const EditArticle = props => {
             initialHeight={400}
             enterKeyHint={'done'}
             placeholder={'please input content'}
-            initialContentHTML={article.content}
+            initialContentHTML=""
             editorInitializedCallback={() => console.log('Initialized editor')}
             onChange={handleChange}
             onHeightChange={x => console.log('on height change', x)}
@@ -114,7 +112,7 @@ const EditArticle = props => {
             pasteAsPlainText={true}
           />
           <Button colorScheme="primary" onPress={save}>
-            save
+            Create
           </Button>
         </VStack>
       </ScrollView>
@@ -122,4 +120,4 @@ const EditArticle = props => {
   );
 };
 
-export default EditArticle;
+export default CreateArticle;
